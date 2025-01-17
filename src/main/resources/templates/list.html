@@ -295,7 +295,7 @@
                                 </td>
                                 <td class="text-center">
                                     <button class="btn btn-info btn-sm"
-                                            th:attr="data-id=${usr.id}, data-firstname=${usr.firstName}, data-lastname=${usr.lastName}, data-age=${usr.age}, data-email=${usr.email}"
+                                            th:attr="data-id=${usr.id}, data-firstname=${usr.firstName}, data-lastname=${usr.lastName}, data-age=${usr.age}, data-email=${usr.email}, data-roles=${usr.roles[0].name}"
                                             onclick="openEditModal(this)">
                                         Edit
                                     </button>
@@ -466,7 +466,9 @@
         const lastName = button.getAttribute('data-lastname');
         const age = button.getAttribute('data-age');
         const email = button.getAttribute('data-email');
+        const roles = button.getAttribute('data-roles'); // Получаем текущую роль пользователя
 
+        // Заполняем поля модального окна
         document.getElementById('edit-id').value = id || '';
         document.getElementById('edit-firstName').value = firstName || '';
         document.getElementById('edit-lastName').value = lastName || '';
@@ -474,9 +476,23 @@
         document.getElementById('edit-email').value = email || '';
         document.getElementById('edit-password').value = '';
 
+        // Устанавливаем текущую роль в выпадающем списке
+        const roleSelect = document.getElementById('edit-roles');
+        if (roles) {
+            Array.from(roleSelect.options).forEach(option => {
+                if (option.text === roles.trim()) {
+                    option.selected = true;
+                }
+            });
+        } else {
+            roleSelect.selectedIndex = 0; // Если роль не указана, выбираем первый элемент (можно задать значение по умолчанию)
+        }
+
+        // Отображаем модальное окно
         const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
         modal.show();
     }
+
 </script>
 
 <!-- Delete User Modal -->
